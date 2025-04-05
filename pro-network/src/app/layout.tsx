@@ -7,7 +7,7 @@ import { SessionProvider } from "@/providers/SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ProNetwork - Professional Networking Platform",
+  title: "ConnectMe - Professional Networking Platform",
   description: "Connect with professionals, find opportunities, and showcase your skills",
 };
 
