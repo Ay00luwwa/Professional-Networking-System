@@ -118,11 +118,11 @@ export const Footer = () => {
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
               <span className="font-bold">P</span>
             </div>
-            <span className="text-lg font-bold text-primary">ProNetwork</span>
+            <span className="text-lg font-bold text-primary">ConnectMe</span>
           </div>
 
           <div className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} ProNetwork Corporation. All rights reserved.
+            &copy; {new Date().getFullYear()} ConnectMe Corporation. All rights reserved.
           </div>
         </div>
       </div>

@@ -90,14 +90,14 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-muted">
+    <div className="min-h-screen flex items-center justify-center bg-muted">
       <div className="w-full max-w-md mx-auto space-y-6 p-4">
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2">
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
-              <span className="font-bold">P</span>
+              <span className="font-bold">C</span>
             </div>
-            <span className="text-xl font-bold text-primary">ProNetwork</span>
+            <span className="text-xl font-bold text-primary">ConnectMe</span>
           </Link>
         </div>
 
@@ -179,7 +179,7 @@ export default function SignUpPage() {
               </div>
 
               <div className="text-xs text-muted-foreground">
-                By clicking "Join ProNetwork", you agree to our <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+                By clicking "Join ConnectMe", you agree to our <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
@@ -188,7 +188,7 @@ export default function SignUpPage() {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? "Creating account..." : "Join ProNetwork"}
+                {loading ? "Creating account..." : "Join ConnectMe"}
               </Button>
 
               <Separator className="my-2" />

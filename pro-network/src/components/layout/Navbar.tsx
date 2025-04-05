@@ -45,9 +45,9 @@ export const Navbar = () => {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
-              <span className="font-bold">P</span>
+              <span className="font-bold">C</span>
             </div>
-            <span className="hidden md:inline-flex text-xl font-bold text-primary">ProNetwork</span>
+            <span className="hidden md:inline-flex text-xl font-bold text-primary">ConnectMe</span>
           </Link>
           <div className="hidden md:flex relative w-60">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />

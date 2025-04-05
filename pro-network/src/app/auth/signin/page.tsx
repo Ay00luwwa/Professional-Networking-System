@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { signIn } from "@/auth";
+import { authAPI } from "@/lib/api-service"; 
+import { AxiosError } from "axios";
+
 
 export default function SignInPage() {
   const router = useRouter();
@@ -36,33 +39,37 @@ export default function SignInPage() {
     try {
       setLoading(true);
 
-      const result = await signIn("credentials", {
-        email,
+      const response = await authAPI.login({
+        username: email, // Using email as username
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
+      if (response.data.token) {
+        localStorage.setItem('access_token', response.data.token);
         toast({
-          title: "Authentication failed",
-          description: "Invalid email or password",
-          variant: "destructive",
+          title: "Success",
+          description: "Signed in successfully",
         });
-        return;
+        router.push(callbackUrl);
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
+      
+      let errorMessage = "Invalid credentials";
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          errorMessage = typeof error.response.data?.error === 'string' 
+            ? error.response.data.error 
+            : "Invalid request format";
+        } else if (error.response?.status === 401) {
+          errorMessage = "Invalid email or password";
+        }
       }
 
       toast({
-        title: "Success",
-        description: "Signed in successfully",
-      });
-
-      router.push(callbackUrl);
-      router.refresh();
-    } catch (error) {
-      console.error("Authentication error:", error);
-      toast({
-        title: "An error occurred",
-        description: "Please try again later",
+        title: "Authentication failed",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -73,7 +80,8 @@ export default function SignInPage() {
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
-      await signIn("google", { callbackUrl });
+      // This will trigger the server-side Google auth flow
+      window.location.href = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(callbackUrl)}`;
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast({
@@ -85,6 +93,7 @@ export default function SignInPage() {
     }
   };
 
+  // UI remains exactly the same as your original
   return (
     <div className="h-screen flex items-center justify-center bg-muted">
       <div className="w-full max-w-md mx-auto space-y-6 p-4">
