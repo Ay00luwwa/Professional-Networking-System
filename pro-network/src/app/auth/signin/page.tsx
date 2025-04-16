@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { signIn } from "@/auth";
 import { authAPI } from "@/lib/api-service"; 
 import { AxiosError } from "axios";
 
@@ -39,37 +38,45 @@ export default function SignInPage() {
     try {
       setLoading(true);
 
-      const response = await authAPI.login({
-        username: email, // Using email as username
-        password,
+      const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
       });
 
-      if (response.data.token) {
-        localStorage.setItem('access_token', response.data.token);
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Server response (non-JSON):', text);
+        throw new Error('Server returned non-JSON response');
+      }
+
+      const data = await response.json();
+      console.log('Login response:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+
+      if (data.token) {
+        localStorage.setItem('access_token', data.token);
         toast({
           title: "Success",
           description: "Signed in successfully",
         });
-        router.push(callbackUrl);
+        router.push("/dashboard");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Authentication error:", error);
-      
-      let errorMessage = "Invalid credentials";
-      
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 400) {
-          errorMessage = typeof error.response.data?.error === 'string' 
-            ? error.response.data.error 
-            : "Invalid request format";
-        } else if (error.response?.status === 401) {
-          errorMessage = "Invalid email or password";
-        }
-      }
-
       toast({
         title: "Authentication failed",
-        description: errorMessage,
+        description: error.message || "Invalid email or password",
         variant: "destructive",
       });
     } finally {
@@ -95,7 +102,7 @@ export default function SignInPage() {
 
   // UI remains exactly the same as your original
   return (
-    <div className="h-screen flex items-center justify-center bg-muted">
+    <div className="min-h-screen flex items-center justify-center bg-muted">
       <div className="w-full max-w-md mx-auto space-y-6 p-4">
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2">

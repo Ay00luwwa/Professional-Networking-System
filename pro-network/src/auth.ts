@@ -19,9 +19,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       session.accessToken = token.accessToken;
-      session.user.id = token.id as string;
+      session.user.id = token.id;
       return session;
     },
   },
@@ -36,10 +36,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
+        if (!credentials?.username || !credentials?.password) {
+          return null;
+        }
         try {
           const response = await authAPI.login({
-            username: credentials.username,
-            password: credentials.password
+            username: credentials.username as string,
+            password: credentials.password as string
           });
           
           return {

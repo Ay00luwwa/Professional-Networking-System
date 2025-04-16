@@ -99,14 +99,14 @@ export const Navbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 border">
                       <div className="w-full h-full flex items-center justify-center rounded-full bg-primary text-white font-bold text-sm">
-                        {session.user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                        {session.user?.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <div className="flex items-center gap-2 p-2">
                       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-                        {session.user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                        {session.user?.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
                       </div>
                       <div>
                         <p className="font-medium">{session.user?.name}</p>
